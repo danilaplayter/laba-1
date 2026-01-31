@@ -1,0 +1,177 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'jacoco'
+    id 'checkstyle'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    versions = [
+            log4j          : '2.20.0',
+            jackson        : '2.15.2',
+            junit          : '5.10.0',
+            assertj        : '3.24.2',
+            mockito        : '5.7.0',
+            googleJavaFormat: '1.17.0',
+            jacoco         : '0.8.11',
+            checkstyle     : '10.12.5'
+    ]
+}
+
+dependencies {
+    implementation "org.apache.logging.log4j:log4j-api:${versions.log4j}"
+    implementation "org.apache.logging.log4j:log4j-core:${versions.log4j}"
+
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${versions.jackson}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${versions.junit}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
+
+    testImplementation "org.assertj:assertj-core:${versions.assertj}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${versions.mockito}"
+}
+
+application {
+    mainClass = 'com.example.textcleaner.TextCleanerApp'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
+}
+
+checkstyle {
+    toolVersion = versions.checkstyle
+    configFile = file("${rootDir}/config/checkstyle/google_checks.xml")
+    maxErrors = 0
+    ignoreFailures = false
+    showViolations = true
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = false
+        html.required = true
+        html.outputLocation = file("${buildDir}/reports/checkstyle/main.html")
+    }
+
+    exclude '**/test/**'
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        showExceptions = true
+        exceptionFormat = 'full'
+        showStandardStreams = true
+    }
+
+    timeout = java.time.Duration.ofMinutes(5)
+
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+}
+
+jacoco {
+    toolVersion = versions.jacoco
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = false
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    '**/TextCleanerApp.class',
+                    '**/LogConfigurator.class',
+                    '**/*Test*.class'
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+
+        rule {
+            element = 'CLASS'
+            includes = ['com.example.textcleaner.*']
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.7
+            }
+            excludes = [
+                    '**TextCleanerApp',
+                    '**LogConfigurator'
+            ]
+        }
+    }
+}
+
+spotless {
+    java {
+        target 'src/**/*.java'
+        googleJavaFormat("${versions.googleJavaFormat}").aosp()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+
+        targetExclude('**/build/**', '**/build-*/**')
+    }
+
+    format 'misc', {
+        target '*.gradle', '*.md', '.gitignore'
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+
+    enforceCheck = true
+}
+
+tasks.named('compileJava') {
+    dependsOn 'spotlessApply'
+}
+
+tasks.named('compileTestJava') {
+    dependsOn 'spotlessApply'
+}
+
+tasks.named('check') {
+    dependsOn jacocoTestCoverageVerification, 'checkstyleMain', 'checkstyleTest', 'spotlessCheck'
+}
+
+tasks.named('build') {
+    dependsOn 'check', 'jacocoTestReport'
+}
