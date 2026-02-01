@@ -5,26 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6e1c5ab-1474-48c9-af00-5b2022d0f529" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/textcleaner/CleaningRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/textcleaner/LogConfigurator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/textcleaner/TextCleaner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/textcleaner/TextCleanerApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/SportClubApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Coach.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Manager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Member.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManager.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/log4j2.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/textcleaner/CleaningRecordTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/textcleaner/EdgeCaseTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/textcleaner/TextCleanerAppTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/textcleaner/TextCleanerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/sportclub/domain/usecase/ClubManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,8 +54,25 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;danilaplayter&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/danilaplayter/laba-1&quot;,
+    &quot;accountId&quot;: &quot;e46f87ee-3a69-483a-89b2-60b700eb7daf&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 1
@@ -76,32 +83,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.EdgeCaseTests.testSpecialWhitespaceCharacters.executor": "Run",
-    "Gradle.Tests in 'textcleaner'.executor": "Run",
-    "Gradle.TextCleanerTest.testDefaultCleanWithSettings.executor": "Run",
-    "Gradle.laba-1 [:textcleaner.TextCleanerApp.main()].executor": "Run",
-    "Gradle.laba-1 [build].executor": "Run",
-    "Gradle.laba-1 [test].executor": "Run",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.ClubManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ClubManagerTest.testMemberExperienceCalculation.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.EdgeCaseTests.testSpecialWhitespaceCharacters.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests in 'textcleaner'.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TextCleanerTest.testDefaultCleanWithSettings.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [:sportclub.Main.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [:sportclub.SportClubApplication.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [:textcleaner.TextCleanerApp.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;laba-2&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
-      <command value="gradle build" />
       <command value="./gradlew test" />
+      <command value="./gradlew --refresh-dependencies" />
+      <command value="gradle build" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.laba-1 [test]">
-    <configuration name="TextCleanerApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="textcleaner.TextCleanerApp" />
+  <component name="RunManager" selected="Gradle.ClubManagerTest">
+    <configuration name="SportClubApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="sportclub.SportClubApplication" />
       <module name="laba-1.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="textcleaner.*" />
+          <option name="PATTERN" value="sportclub.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -109,7 +126,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EdgeCaseTests.testSpecialWhitespaceCharacters" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ClubManagerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -122,7 +139,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;textcleaner.EdgeCaseTests.testSpecialWhitespaceCharacters&quot;" />
+            <option value="&quot;sportclub.domain.usecase.ClubManagerTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -133,7 +150,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Tests in 'textcleaner'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ClubManagerTest.testMemberExperienceCalculation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -146,7 +163,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;textcleaner.*&quot;" />
+            <option value="&quot;sportclub.domain.usecase.ClubManagerTest.testMemberExperienceCalculation&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -157,7 +174,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TextCleanerTest.testDefaultCleanWithSettings" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="laba-1 [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -168,32 +185,28 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;textcleaner.TextCleanerTest.testDefaultCleanWithSettings&quot;" />
+            <option value="build" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="laba-1 [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="laba-1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
+        <option name="scriptParameters" value="--refresh-dependencies" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
-          <list>
-            <option value="test" />
-          </list>
+          <list />
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
@@ -205,11 +218,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.laba-1 [test]" />
-        <item itemvalue="Gradle.EdgeCaseTests.testSpecialWhitespaceCharacters" />
-        <item itemvalue="Gradle.TextCleanerTest.testDefaultCleanWithSettings" />
-        <item itemvalue="Gradle.Tests in 'textcleaner'" />
-        <item itemvalue="Application.TextCleanerApp" />
+        <item itemvalue="Gradle.ClubManagerTest" />
+        <item itemvalue="Gradle.ClubManagerTest.testMemberExperienceCalculation" />
+        <item itemvalue="Gradle.laba-1 [build]" />
+        <item itemvalue="Application.SportClubApplication" />
+        <item itemvalue="Gradle.laba-1" />
       </list>
     </recent_temporary>
   </component>

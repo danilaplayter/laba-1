@@ -28,11 +28,18 @@ ext {
             mockito        : '5.7.0',
             googleJavaFormat: '1.17.0',
             jacoco         : '0.8.11',
-            checkstyle     : '10.12.5'
+            checkstyle     : '10.12.5',
+            lombok         : '1.18.30'
     ]
 }
 
 dependencies {
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+
+    testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
+    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+
     implementation "org.apache.logging.log4j:log4j-api:${versions.log4j}"
     implementation "org.apache.logging.log4j:log4j-core:${versions.log4j}"
 
@@ -49,12 +56,24 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.example.textcleaner.TextCleanerApp'
+    mainClass = 'sportclub.SportClubApplication'
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
+    options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation', '-parameters']
+
+    options.annotationProcessorPath = configurations.annotationProcessor
+    options.compilerArgs += [
+            '-Amapstruct.defaultComponentModel=spring',
+            '-Amapstruct.unmappedTargetPolicy=IGNORE'
+    ]
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 checkstyle {
@@ -73,6 +92,8 @@ tasks.withType(Checkstyle) {
     }
 
     exclude '**/test/**'
+
+    classpath = files()
 }
 
 test {
@@ -106,9 +127,10 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    '**/TextCleanerApp.class',
+                    '**/SportClubApp.class',
                     '**/LogConfigurator.class',
-                    '**/*Test*.class'
+                    '**/*Test*.class',
+                    '**/*$*.class'
             ])
         }))
     }
@@ -125,15 +147,16 @@ jacocoTestCoverageVerification {
 
         rule {
             element = 'CLASS'
-            includes = ['com.example.textcleaner.*']
+            includes = ['com.example.sportclub.*']
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
                 minimum = 0.7
             }
             excludes = [
-                    '**TextCleanerApp',
-                    '**LogConfigurator'
+                    '**SportClubApp',
+                    '**LogConfigurator',
+                    '**$*'
             ]
         }
     }

@@ -1,0 +1,81 @@
+Configuration:
+  status: warn
+  name: SportClubConfig
+
+  appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{HH:mm:ss.SSS} | %highlight{%-5level} | %style{%logger{36}}{cyan} | %msg%n"
+        disableAnsi: false
+
+    File:
+      name: File
+      fileName: "logs/sportclub.log"
+      append: true
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5level | %logger{36} | %msg%n"
+
+    RollingFile:
+      name: RollingFile
+      fileName: "logs/sportclub-app.log"
+      filePattern: "logs/archive/sportclub-%d{yyyy-MM-dd}-%i.log.gz"
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5level | %thread | %logger{36} | %msg%n%throwable"
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: "10 MB"
+        TimeBasedTriggeringPolicy:
+          interval: 1
+          modulate: true
+      DefaultRolloverStrategy:
+        max: 30
+        delete:
+          basePath: "logs/archive"
+          maxDepth: 1
+          IfFileName:
+            glob: "sportclub-*.log.gz"
+          IfLastModified:
+            age: "30d"
+
+    AdminAuditFile:
+      name: AdminAuditFile
+      fileName: "logs/admin-audit.log"
+      append: true
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} | ADMIN_ACTION | %msg%n"
+
+  Loggers:
+    Logger:
+      - name: "sportclub"
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: Console
+          - ref: RollingFile
+
+      - name: "sportclub.domain.usecase.ClubManager"
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: Console
+          - ref: RollingFile
+
+      - name: "sportclub.admin"
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: AdminAuditFile
+          - ref: RollingFile
+
+      - name: "sportclub.file"
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: RollingFile
+
+    Root:
+      level: error
+      AppenderRef:
+        - ref: Console
