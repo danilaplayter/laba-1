@@ -1,0 +1,46 @@
+Configuration:
+  status: info
+  name: TextCleanerConfig
+  appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+
+    File:
+      name: File
+      fileName: "logs/text-cleaner.log"
+      append: true
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+
+    RollingFile:
+      - name: RollingFile
+        fileName: "logs/text-cleaner-app.log"
+        filePattern: "logs/$${date:yyyy-MM}/text-cleaner-%d{yyyy-MM-dd}-%i.log"
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: "10 MB"
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+        DefaultRolloverStrategy:
+          max: 10
+
+  Loggers:
+    Logger:
+      - name: "com.example.textcleaner"
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: Console
+          - ref: RollingFile
+
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: File
