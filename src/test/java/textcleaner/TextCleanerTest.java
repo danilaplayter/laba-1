@@ -141,7 +141,7 @@ class TextCleanerTest {
 
     @Test
     void testRussianTextCleaning() {
-        String input = "  Привет,   мир! 123...  ";
+        String input = "  Привет,       мир! 123...  ";
         String result = textCleaner.cleanText(input, 6);
         assertThat(result).isEqualTo("Привет мир");
     }
