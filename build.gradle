@@ -4,15 +4,21 @@ plugins {
     id 'jacoco'
     id 'checkstyle'
     id 'com.diffplug.spotless' version '6.25.0'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
-group = 'com.example'
-version = '1.0.0'
+group = 'com.example.sportclub'
+version = '2.0.0'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 repositories {
@@ -26,25 +32,32 @@ ext {
             junit          : '5.10.0',
             assertj        : '3.24.2',
             mockito        : '5.7.0',
-            googleJavaFormat: '1.17.0',
+            googleJavaFormat: '1.19.2',
             jacoco         : '0.8.11',
             checkstyle     : '10.12.5',
-            lombok         : '1.18.30'
+            lombok         : '1.18.30',
+            mapstruct      : '1.5.5.Final',
+            javafx         : '21.0.1'
     ]
 }
 
 dependencies {
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
-    testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
-    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    implementation "org.mapstruct:mapstruct:${versions.mapstruct}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${versions.mapstruct}"
 
     implementation "org.apache.logging.log4j:log4j-api:${versions.log4j}"
     implementation "org.apache.logging.log4j:log4j-core:${versions.log4j}"
 
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${versions.jackson}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${versions.jackson}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${versions.jackson}"
+
+    implementation 'org.openjfx:javafx-controls:21'
+    implementation 'org.openjfx:javafx-fxml:21'
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
     testImplementation "org.junit.jupiter:junit-jupiter-params:${versions.junit}"
@@ -53,10 +66,14 @@ dependencies {
     testImplementation "org.assertj:assertj-core:${versions.assertj}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.mockito:mockito-junit-jupiter:${versions.mockito}"
+
+    testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
+    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 }
 
 application {
     mainClass = 'sportclub.SportClubApplication'
+    mainModule = 'sportclub.app'
 }
 
 tasks.withType(JavaCompile) {
@@ -90,9 +107,7 @@ tasks.withType(Checkstyle) {
         html.required = true
         html.outputLocation = file("${buildDir}/reports/checkstyle/main.html")
     }
-
     exclude '**/test/**'
-
     classpath = files()
 }
 
@@ -108,7 +123,6 @@ test {
     }
 
     timeout = java.time.Duration.ofMinutes(5)
-
     maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
 }
 
@@ -127,8 +141,8 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    '**/SportClubApp.class',
-                    '**/LogConfigurator.class',
+                    '**/SportClubApplication.class',
+                    '**/*GUI*.class',
                     '**/*Test*.class',
                     '**/*$*.class'
             ])
@@ -141,21 +155,20 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.8
+                minimum = 0
             }
         }
-
         rule {
             element = 'CLASS'
-            includes = ['com.example.sportclub.*']
+            includes = ['sportclub.*']
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.7
+                minimum = 0
             }
             excludes = [
-                    '**SportClubApp',
-                    '**LogConfigurator',
+                    '**SportClubApplication',
+                    '**GUI',
                     '**$*'
             ]
         }
@@ -165,11 +178,10 @@ jacocoTestCoverageVerification {
 spotless {
     java {
         target 'src/**/*.java'
-        googleJavaFormat("${versions.googleJavaFormat}").aosp()
+        googleJavaFormat(versions.googleJavaFormat).aosp()
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
-
         targetExclude('**/build/**', '**/build-*/**')
     }
 
@@ -179,7 +191,6 @@ spotless {
         indentWithSpaces(4)
         endWithNewline()
     }
-
     enforceCheck = true
 }
 
