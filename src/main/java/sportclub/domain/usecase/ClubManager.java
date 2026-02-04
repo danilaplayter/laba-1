@@ -14,7 +14,6 @@ import sportclub.domain.model.Coach;
 import sportclub.domain.model.Manager;
 import sportclub.domain.model.Member;
 import sportclub.domain.model.Player;
-
 import sportclub.domain.service.SalaryRegistry;
 import sportclub.domain.service.StatisticsService;
 import sportclub.domain.service.TransferJournal;
@@ -1978,7 +1977,9 @@ public class ClubManager {
                 case 2 -> showTransferRecordsByMember();
                 case 3 -> showRecentTransferRecords();
                 case 4 -> generateTransferReport();
-                case 5 -> { return; }
+                case 5 -> {
+                    return;
+                }
                 default -> System.out.println("Неверный выбор!");
             }
         } catch (NumberFormatException e) {
@@ -2004,7 +2005,7 @@ public class ClubManager {
             int memberId = Integer.parseInt(scanner.nextLine());
 
             List<TransferJournal.TransferRecord> records =
-                facade.getTransferRecordsByMember(memberId);
+                    facade.getTransferRecordsByMember(memberId);
 
             if (records.isEmpty()) {
                 System.out.println("Записей для данного участника не найдено!");
@@ -2043,8 +2044,8 @@ public class ClubManager {
         if (choice.equals("да")) {
             System.out.print("Введите имя файла: ");
             String filename = scanner.nextLine();
-            boolean success = facade.exportReportToFile(report,
-                "reports/transfer_" + filename + ".txt");
+            boolean success =
+                    facade.exportReportToFile(report, "reports/transfer_" + filename + ".txt");
 
             if (success) {
                 System.out.println("Отчет сохранен!");
@@ -2070,7 +2071,9 @@ public class ClubManager {
                 case 2 -> showSalaryHistory();
                 case 3 -> showSalaryStatistics();
                 case 4 -> showAverageSalariesByRole();
-                case 5 -> { return; }
+                case 5 -> {
+                    return;
+                }
                 default -> System.out.println("Неверный выбор!");
             }
         } catch (NumberFormatException e) {
@@ -2083,11 +2086,12 @@ public class ClubManager {
         System.out.println("\n=== ВСЕ ЗАРПЛАТЫ ===");
         System.out.printf("Всего записей: %d\n", members.size());
 
-        members.forEach(m -> {
-            BigDecimal salary = facade.getSalaryFromRegistry(m.getId());
-            System.out.printf("%s (ID: %d, %s): %s\n",
-                m.getName(), m.getId(), m.getRole(), salary);
-        });
+        members.forEach(
+                m -> {
+                    BigDecimal salary = facade.getSalaryFromRegistry(m.getId());
+                    System.out.printf(
+                            "%s (ID: %d, %s): %s\n", m.getName(), m.getId(), m.getRole(), salary);
+                });
     }
 
     private void showSalaryHistory() {
@@ -2104,8 +2108,9 @@ public class ClubManager {
             System.out.println("\n=== ИСТОРИЯ ЗАРПЛАТ ===");
             System.out.printf("Текущая зарплата: %s\n", history.getCurrentSalary());
             System.out.printf("Предыдущая зарплата: %s\n", history.getPreviousSalary());
-            System.out.printf("Изменение: %s (%.2f%%)\n",
-                history.getSalaryChange(), history.getSalaryGrowthPercentage());
+            System.out.printf(
+                    "Изменение: %s (%.2f%%)\n",
+                    history.getSalaryChange(), history.getSalaryGrowthPercentage());
 
             System.out.println("\nВсе записи:");
             history.getAllRecords().forEach(System.out::println);
@@ -2137,8 +2142,8 @@ public class ClubManager {
             }
         }
 
-        BigDecimal average = total.divide(BigDecimal.valueOf(members.size()),
-            2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal average =
+                total.divide(BigDecimal.valueOf(members.size()), 2, BigDecimal.ROUND_HALF_UP);
 
         System.out.println("\n=== СТАТИСТИКА ЗАРПЛАТ ===");
         System.out.printf("Общий фонд: %s\n", total);
@@ -2168,7 +2173,9 @@ public class ClubManager {
             switch (choice) {
                 case 1 -> showTrainingStatisticsByDate();
                 case 2 -> showMostActiveDays();
-                case 3 -> { return; }
+                case 3 -> {
+                    return;
+                }
                 default -> System.out.println("Неверный выбор!");
             }
         } catch (NumberFormatException e) {
@@ -2183,9 +2190,11 @@ public class ClubManager {
         System.out.printf("Всего дней с тренировками: %d\n", counts.size());
 
         counts.entrySet().stream()
-            .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
-            .forEach(entry ->
-                System.out.printf("%s: %d тренировок\n", entry.getKey(), entry.getValue()));
+                .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
+                .forEach(
+                        entry ->
+                                System.out.printf(
+                                        "%s: %d тренировок\n", entry.getKey(), entry.getValue()));
     }
 
     private void showMostActiveDays() {
@@ -2198,5 +2207,4 @@ public class ClubManager {
             System.out.printf("%d. %s: %d тренировок\n", i + 1, date, count);
         }
     }
-
 }

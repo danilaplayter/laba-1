@@ -7,13 +7,12 @@
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6e1c5ab-1474-48c9-af00-5b2022d0f529" name="Changes" comment="laba-3">
-      <change afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/SalaryRegistry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TrainingRegistry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TransferJournal.java" afterDir="false" />
+    <list default="true" id="b6e1c5ab-1474-48c9-af00-5b2022d0f529" name="Changes" comment="laba-4">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/SalaryRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/SalaryRegistry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/StatisticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/StatisticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TrainingRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TrainingRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TransferJournal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TransferJournal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManagerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManagerFacade.java" afterDir="false" />
     </list>
@@ -126,11 +125,11 @@
       <command value="gradle build" />
       <command value="./gradlew compileTestJava" />
       <command value="./gradlew test --tests &quot;sportclub.domain.usecase.ClubManagerFacadeTest&quot;" />
-      <command value="./gradlew clean build --info" />
       <command value="./gradlew test" />
+      <command value="./gradlew clean build --info" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.laba-1 [test]">
+  <component name="RunManager" selected="Gradle.laba-1 [clean build]">
     <configuration name="SportClubApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="sportclub.SportClubApplication" />
       <module name="laba-1.main" />
@@ -257,6 +256,15 @@
       <updated>1769859221106</updated>
       <workItem from="1770020443148" duration="16000" />
     </task>
+    <task id="LOCAL-00001" summary="laba-4">
+      <option name="closed" value="true" />
+      <created>1770195731693</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1770195731693</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,6 +273,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="amend" />
     <MESSAGE value="laba-3" />
-    <option name="LAST_COMMIT_MESSAGE" value="laba-3" />
+    <MESSAGE value="laba-4" />
+    <option name="LAST_COMMIT_MESSAGE" value="laba-4" />
   </component>
 </project>

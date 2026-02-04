@@ -116,13 +116,14 @@ public class StatisticsService {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, DoubleSummaryStatistics> getExperienceStatisticsByRole(List<Member> members) {
+    public Map<String, DoubleSummaryStatistics> getExperienceStatisticsByRole(
+            List<Member> members) {
         Map<String, DoubleSummaryStatistics> statsByRole = new HashMap<>();
 
         for (Member member : members) {
             String role = member.getRole();
-            DoubleSummaryStatistics stats = statsByRole.getOrDefault(role,
-                new DoubleSummaryStatistics());
+            DoubleSummaryStatistics stats =
+                    statsByRole.getOrDefault(role, new DoubleSummaryStatistics());
             stats.accept(member.getExperience());
             statsByRole.put(role, stats);
         }
@@ -135,8 +136,8 @@ public class StatisticsService {
 
         for (Member member : members) {
             String role = member.getRole();
-            DoubleSummaryStatistics stats = statsByRole.getOrDefault(role,
-                new DoubleSummaryStatistics());
+            DoubleSummaryStatistics stats =
+                    statsByRole.getOrDefault(role, new DoubleSummaryStatistics());
             stats.accept(member.getAge());
             statsByRole.put(role, stats);
         }
@@ -149,8 +150,8 @@ public class StatisticsService {
 
         for (Member member : members) {
             String role = member.getRole();
-            DoubleSummaryStatistics stats = statsByRole.getOrDefault(role,
-                new DoubleSummaryStatistics());
+            DoubleSummaryStatistics stats =
+                    statsByRole.getOrDefault(role, new DoubleSummaryStatistics());
             stats.accept(member.getTrainingCount());
             statsByRole.put(role, stats);
         }
@@ -160,41 +161,37 @@ public class StatisticsService {
 
     public Map<String, DoubleSummaryStatistics> getSalaryStatisticsByRole(List<Member> members) {
         return members.stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.summarizingDouble(m -> m.getBaseSalary().doubleValue())
-            ));
+                .collect(
+                        Collectors.groupingBy(
+                                Member::getRole,
+                                Collectors.summarizingDouble(
+                                        m -> m.getBaseSalary().doubleValue())));
     }
 
     public List<Member> getTopByAge(List<Member> members, int limit, boolean ascending) {
-        Comparator<Member> comparator = ascending ?
-            Comparator.comparingInt(Member::getAge) :
-            Comparator.comparingInt(Member::getAge).reversed();
+        Comparator<Member> comparator =
+                ascending
+                        ? Comparator.comparingInt(Member::getAge)
+                        : Comparator.comparingInt(Member::getAge).reversed();
 
-        return members.stream()
-            .sorted(comparator)
-            .limit(limit)
-            .collect(Collectors.toList());
+        return members.stream().sorted(comparator).limit(limit).collect(Collectors.toList());
     }
 
     public List<Member> getTopByTrainingCount(List<Member> members, int limit) {
         return members.stream()
-            .sorted((m1, m2) -> Integer.compare(m2.getTrainingCount(), m1.getTrainingCount()))
-            .limit(limit)
-            .collect(Collectors.toList());
+                .sorted((m1, m2) -> Integer.compare(m2.getTrainingCount(), m1.getTrainingCount()))
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 
     public Map<String, Long> getRoleDistributionDetailed(List<Member> members) {
         return members.stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.counting()
-            ));
+                .collect(Collectors.groupingBy(Member::getRole, Collectors.counting()));
     }
 
     public double getAverageExperienceAll(List<Member> members) {
-        DoubleSummaryStatistics stats = members.stream()
-            .collect(Collectors.summarizingDouble(Member::getExperience));
+        DoubleSummaryStatistics stats =
+                members.stream().collect(Collectors.summarizingDouble(Member::getExperience));
         return stats.getAverage();
     }
 

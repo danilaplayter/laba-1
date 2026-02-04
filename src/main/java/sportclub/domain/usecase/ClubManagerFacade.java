@@ -8,7 +8,6 @@ import sportclub.domain.interfaces.Payable;
 import sportclub.domain.model.*;
 import sportclub.domain.model.Member.TrainingRecord;
 import sportclub.domain.service.*;
-import sportclub.domain.service.TransferJournal.TransferRecord;
 
 public class ClubManagerFacade {
     private final MemberManagementService memberService;
@@ -153,8 +152,6 @@ public class ClubManagerFacade {
         return sortService.sortByMultipleFields(getAllMembers(), primary, secondary);
     }
 
-
-
     public double getAverageIntensity() {
         return trainingService.getAverageIntensity(getAllMembers());
     }
@@ -183,7 +180,6 @@ public class ClubManagerFacade {
     public BigDecimal getTotalPaidToDate() {
         return financeService.getTotalPaidToDate(getAllMembers());
     }
-
 
     public Map<String, Long> getRoleDistribution() {
         return statisticsService.getRoleDistribution(getAllMembers());
@@ -366,12 +362,10 @@ public class ClubManagerFacade {
         member.ifPresent(m -> m.setAge(newAge));
     }
 
-
     public void editMemberJoinDate(int id, LocalDate newJoinDate) {
         Optional<Member> member = findMemberById(id);
         member.ifPresent(m -> m.setJoinDate(newJoinDate));
     }
-
 
     public void editPlayerJerseyNumber(int id, int newNumber) {
         Optional<Member> member = findMemberById(id);
@@ -486,8 +480,11 @@ public class ClubManagerFacade {
         return trainingRegistry.getMostActiveDays(limit);
     }
 
-    public void recordTransfer(Member member, TransferJournal.TransferType type,
-        String description, BigDecimal amount) {
+    public void recordTransfer(
+            Member member,
+            TransferJournal.TransferType type,
+            String description,
+            BigDecimal amount) {
         transferJournal.recordTransfer(member, type, description, amount);
     }
 
@@ -500,7 +497,7 @@ public class ClubManagerFacade {
     }
 
     public List<TransferJournal.TransferRecord> getTransferRecordsByType(
-        TransferJournal.TransferType type) {
+            TransferJournal.TransferType type) {
         return transferJournal.getRecordsByType(type);
     }
 
@@ -517,52 +514,60 @@ public class ClubManagerFacade {
     }
 
     public Member addPlayer(
-        String name,
-        int age,
-        String team,
-        String position,
-        int jerseyNumber,
-        BigDecimal salary) {
+            String name,
+            int age,
+            String team,
+            String position,
+            int jerseyNumber,
+            BigDecimal salary) {
         Member player = memberService.addPlayer(name, age, team, position, jerseyNumber, salary);
         if (player != null) {
             salaryRegistry.registerSalary(player.getId(), player.getBaseSalary());
-            transferJournal.recordTransfer(player,
-                TransferJournal.TransferType.TRANSFER_IN,
-                "Новый игрок в клубе", salary);
+            transferJournal.recordTransfer(
+                    player,
+                    TransferJournal.TransferType.TRANSFER_IN,
+                    "Новый игрок в клубе",
+                    salary);
         }
         return player;
     }
 
     public Member addCoach(
-        String name,
-        int age,
-        String team,
-        String specialization,
-        String certification,
-        BigDecimal salary) {
-        Member coach = memberService.addCoach(name, age, team, specialization, certification, salary);
+            String name,
+            int age,
+            String team,
+            String specialization,
+            String certification,
+            BigDecimal salary) {
+        Member coach =
+                memberService.addCoach(name, age, team, specialization, certification, salary);
         if (coach != null) {
             salaryRegistry.registerSalary(coach.getId(), coach.getBaseSalary());
-            transferJournal.recordTransfer(coach,
-                TransferJournal.TransferType.TRANSFER_IN,
-                "Новый тренер в клубе", salary);
+            transferJournal.recordTransfer(
+                    coach,
+                    TransferJournal.TransferType.TRANSFER_IN,
+                    "Новый тренер в клубе",
+                    salary);
         }
         return coach;
     }
 
     public Member addManager(
-        String name,
-        int age,
-        String team,
-        String department,
-        String responsibilities,
-        BigDecimal salary) {
-        Member manager = memberService.addManager(name, age, team, department, responsibilities, salary);
+            String name,
+            int age,
+            String team,
+            String department,
+            String responsibilities,
+            BigDecimal salary) {
+        Member manager =
+                memberService.addManager(name, age, team, department, responsibilities, salary);
         if (manager != null) {
             salaryRegistry.registerSalary(manager.getId(), manager.getBaseSalary());
-            transferJournal.recordTransfer(manager,
-                TransferJournal.TransferType.TRANSFER_IN,
-                "Новый менеджер в клубе", salary);
+            transferJournal.recordTransfer(
+                    manager,
+                    TransferJournal.TransferType.TRANSFER_IN,
+                    "Новый менеджер в клубе",
+                    salary);
         }
         return manager;
     }
@@ -571,9 +576,11 @@ public class ClubManagerFacade {
         Optional<Member> member = findMemberById(id);
         if (member.isPresent()) {
             salaryRegistry.removeSalary(id);
-            transferJournal.recordTransfer(member.get(),
-                TransferJournal.TransferType.TRANSFER_OUT,
-                "Уход из клуба", member.get().getBaseSalary());
+            transferJournal.recordTransfer(
+                    member.get(),
+                    TransferJournal.TransferType.TRANSFER_OUT,
+                    "Уход из клуба",
+                    member.get().getBaseSalary());
         }
         return memberService.removeMember(id);
     }
@@ -585,22 +592,25 @@ public class ClubManagerFacade {
             financeService.adjustSalary(member.get(), newSalary);
             salaryRegistry.updateSalary(memberId, newSalary);
 
-            String description = String.format("Изменение зарплаты с %s на %s",
-                oldSalary, newSalary);
-            transferJournal.recordTransfer(member.get(),
-                TransferJournal.TransferType.SALARY_CHANGE,
-                description, newSalary);
+            String description =
+                    String.format("Изменение зарплаты с %s на %s", oldSalary, newSalary);
+            transferJournal.recordTransfer(
+                    member.get(),
+                    TransferJournal.TransferType.SALARY_CHANGE,
+                    description,
+                    newSalary);
         }
     }
 
     public String conductTraining(int memberId, int durationMinutes, int intensity) {
         Optional<Member> member = findMemberById(memberId);
         if (member.isPresent()) {
-            String result = trainingService.conductTraining(
-                member.get(), durationMinutes, intensity, LocalDate.now());
+            String result =
+                    trainingService.conductTraining(
+                            member.get(), durationMinutes, intensity, LocalDate.now());
 
-            TrainingRecord record = new TrainingRecord(
-                durationMinutes, intensity, LocalDate.now(), result);
+            TrainingRecord record =
+                    new TrainingRecord(durationMinutes, intensity, LocalDate.now(), result);
             trainingRegistry.registerTraining(member.get(), record);
 
             return result;
@@ -608,95 +618,100 @@ public class ClubManagerFacade {
         return "Участник не найден!";
     }
 
-
     public void editMemberTeam(int id, String newTeam) {
         Optional<Member> member = findMemberById(id);
         if (member.isPresent()) {
             String oldTeam = member.get().getTeam();
             member.ifPresent(m -> m.setTeam(newTeam));
 
-            String description = String.format("Переход из команды '%s' в '%s'",
-                oldTeam, newTeam);
-            transferJournal.recordTransfer(member.get(),
-                TransferJournal.TransferType.TEAM_CHANGE,
-                description, BigDecimal.ZERO);
+            String description = String.format("Переход из команды '%s' в '%s'", oldTeam, newTeam);
+            transferJournal.recordTransfer(
+                    member.get(),
+                    TransferJournal.TransferType.TEAM_CHANGE,
+                    description,
+                    BigDecimal.ZERO);
         }
     }
 
     public void editPlayerPosition(int id, String newPosition) {
         Optional<Member> member = findMemberById(id);
         member.ifPresent(
-            m -> {
-                if (m instanceof Player player) {
-                    String oldPosition = player.getPosition();
-                    player.setPosition(newPosition);
+                m -> {
+                    if (m instanceof Player player) {
+                        String oldPosition = player.getPosition();
+                        player.setPosition(newPosition);
 
-                    String description = String.format("Изменение позиции с '%s' на '%s'",
-                        oldPosition, newPosition);
-                    transferJournal.recordTransfer(player,
-                        TransferJournal.TransferType.POSITION_CHANGE,
-                        description, BigDecimal.ZERO);
-                }
-            });
+                        String description =
+                                String.format(
+                                        "Изменение позиции с '%s' на '%s'",
+                                        oldPosition, newPosition);
+                        transferJournal.recordTransfer(
+                                player,
+                                TransferJournal.TransferType.POSITION_CHANGE,
+                                description,
+                                BigDecimal.ZERO);
+                    }
+                });
     }
 
     public Map<String, Long> getRoleDistributionDetailed() {
         return getAllMembers().stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.counting()));
+                .collect(Collectors.groupingBy(Member::getRole, Collectors.counting()));
     }
 
     public double getAverageExperienceAll() {
         return getAllMembers().stream()
-            .collect(Collectors.summarizingDouble(Member::getExperience))
-            .getAverage();
+                .collect(Collectors.summarizingDouble(Member::getExperience))
+                .getAverage();
     }
 
     public Map<String, java.util.DoubleSummaryStatistics> getExperienceStatisticsByRole() {
         return getAllMembers().stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.summarizingDouble(Member::getExperience)));
+                .collect(
+                        Collectors.groupingBy(
+                                Member::getRole,
+                                Collectors.summarizingDouble(Member::getExperience)));
     }
 
     public Map<String, java.util.DoubleSummaryStatistics> getAgeStatisticsByRole() {
         return getAllMembers().stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.summarizingDouble(Member::getAge)));
+                .collect(
+                        Collectors.groupingBy(
+                                Member::getRole, Collectors.summarizingDouble(Member::getAge)));
     }
 
     public List<Member> getTopByAge(int limit, boolean ascending) {
-        Comparator<Member> comparator = ascending ?
-            Comparator.comparingInt(Member::getAge) :
-            Comparator.comparingInt(Member::getAge).reversed();
+        Comparator<Member> comparator =
+                ascending
+                        ? Comparator.comparingInt(Member::getAge)
+                        : Comparator.comparingInt(Member::getAge).reversed();
 
         return getAllMembers().stream()
-            .sorted(comparator)
-            .limit(limit)
-            .collect(Collectors.toList());
+                .sorted(comparator)
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 
     public List<Member> getTopByTrainingCount(int limit) {
         return getAllMembers().stream()
-            .sorted((m1, m2) -> Integer.compare(m2.getTrainingCount(), m1.getTrainingCount()))
-            .limit(limit)
-            .collect(Collectors.toList());
+                .sorted((m1, m2) -> Integer.compare(m2.getTrainingCount(), m1.getTrainingCount()))
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 
     public Map<String, Integer> getTrainingDistributionByRole() {
         return getAllMembers().stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.summingInt(Member::getTrainingCount)));
+                .collect(
+                        Collectors.groupingBy(
+                                Member::getRole, Collectors.summingInt(Member::getTrainingCount)));
     }
 
     public Map<String, Double> getAverageTrainingCountByRole() {
         return getAllMembers().stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.averagingDouble(Member::getTrainingCount)));
+                .collect(
+                        Collectors.groupingBy(
+                                Member::getRole,
+                                Collectors.averagingDouble(Member::getTrainingCount)));
     }
 
     public List<Integer> getMostActiveMembers(int limit) {
@@ -745,8 +760,10 @@ public class ClubManagerFacade {
 
     public Map<String, java.util.DoubleSummaryStatistics> getSalaryStatisticsByRole() {
         return getAllMembers().stream()
-            .collect(Collectors.groupingBy(
-                Member::getRole,
-                Collectors.summarizingDouble(m -> m.getBaseSalary().doubleValue())));
+                .collect(
+                        Collectors.groupingBy(
+                                Member::getRole,
+                                Collectors.summarizingDouble(
+                                        m -> m.getBaseSalary().doubleValue())));
     }
 }
