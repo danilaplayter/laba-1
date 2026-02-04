@@ -8,29 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6e1c5ab-1474-48c9-af00-5b2022d0f529" name="Changes" comment="laba-3">
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/config/AppConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/interfaces/Payable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/interfaces/Trainable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/FinanceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/ImportExportService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/MemberManagementService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/MemberSearchService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/MemberSortService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/ReportService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/StatisticsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TrainingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManagerFacade.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/utils/InputValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/utils/LoggerUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/sportclub/domain/usecase/ClubManagerFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/SalaryRegistry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TrainingRegistry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/TransferJournal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Coach.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Coach.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/model/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/StatisticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/service/StatisticsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/sportclub/domain/usecase/ClubManagerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManagerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sportclub/domain/usecase/ClubManagerFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,37 +88,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.ClubManagerFacadeTest.executor": "Run",
-    "Gradle.ClubManagerFacadeTest.testAddPlayer.executor": "Run",
-    "Gradle.ClubManagerTest.executor": "Run",
-    "Gradle.EdgeCaseTests.testSpecialWhitespaceCharacters.executor": "Run",
-    "Gradle.Tests in 'textcleaner'.executor": "Run",
-    "Gradle.TextCleanerTest.testDefaultCleanWithSettings.executor": "Run",
-    "Gradle.laba-1 [:sportclub.SportClubApplication.main()].executor": "Run",
-    "Gradle.laba-1 [:textcleaner.TextCleanerApp.main()].executor": "Run",
-    "Gradle.laba-1 [build].executor": "Run",
-    "Gradle.laba-1 [clean build].executor": "Run",
-    "Gradle.laba-1 [compileTestJava].executor": "Run",
-    "Gradle.laba-1 [dependencies].executor": "Run",
-    "Gradle.laba-1 [spotlessApply].executor": "Run",
-    "Gradle.laba-1 [test --tests \"sportclub.domain.usecase.ClubManagerFacadeTest\"].executor": "Run",
-    "Gradle.laba-1 [test].executor": "Run",
-    "Gradle.laba-1.executor": "Run",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "laba-3",
-    "kotlin-language-version-configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.ClubManagerFacadeTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ClubManagerFacadeTest.testAddPlayer.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ClubManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.EdgeCaseTests.testSpecialWhitespaceCharacters.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests in 'textcleaner'.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TextCleanerTest.testDefaultCleanWithSettings.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [:sportclub.SportClubApplication.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [:textcleaner.TextCleanerApp.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [clean build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [compileTestJava].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [spotlessApply].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [test --tests \&quot;sportclub.domain.usecase.ClubManagerFacadeTest\&quot;].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1 [test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.laba-1.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;laba-4&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="./gradlew spotlessApply" />

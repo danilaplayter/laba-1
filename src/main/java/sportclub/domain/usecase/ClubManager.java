@@ -14,7 +14,10 @@ import sportclub.domain.model.Coach;
 import sportclub.domain.model.Manager;
 import sportclub.domain.model.Member;
 import sportclub.domain.model.Player;
+
+import sportclub.domain.service.SalaryRegistry;
 import sportclub.domain.service.StatisticsService;
+import sportclub.domain.service.TransferJournal;
 import sportclub.utils.InputValidator;
 import sportclub.utils.LoggerUtil;
 
@@ -69,6 +72,9 @@ public class ClubManager {
             System.out.println("11. Администрирование");
             System.out.println("12. Отчёты");
             System.out.println("13. Управление командами");
+            System.out.println("14. Журнал трансферов");
+            System.out.println("15. Реестр зарплат");
+            System.out.println("16. Реестр тренировок");
             System.out.println("0. Выход");
             System.out.print("Выберите действие: ");
 
@@ -90,6 +96,9 @@ public class ClubManager {
                     case 11 -> adminMenu();
                     case 12 -> reportsMenu();
                     case 13 -> teamsMenu();
+                    case 14 -> transferJournalMenu();
+                    case 15 -> salaryRegistryMenu();
+                    case 16 -> trainingRegistryMenu();
                     case 0 -> {
                         LoggerUtil.logShutdown(logger);
                         saveToFile();
@@ -1952,4 +1961,242 @@ public class ClubManager {
             scanner.close();
         }
     }
+
+    private void transferJournalMenu() {
+        System.out.println("\n=== ЖУРНАЛ ТРАНСФЕРОВ ===");
+        System.out.println("1. Просмотреть все записи");
+        System.out.println("2. Просмотреть записи по участнику");
+        System.out.println("3. Просмотреть последние 10 записей");
+        System.out.println("4. Сгенерировать отчет");
+        System.out.println("5. Назад");
+        System.out.print("Выберите действие: ");
+
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> showAllTransferRecords();
+                case 2 -> showTransferRecordsByMember();
+                case 3 -> showRecentTransferRecords();
+                case 4 -> generateTransferReport();
+                case 5 -> { return; }
+                default -> System.out.println("Неверный выбор!");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода!");
+        }
+    }
+
+    private void showAllTransferRecords() {
+        List<TransferJournal.TransferRecord> records = facade.getTransferRecords();
+        if (records.isEmpty()) {
+            System.out.println("Журнал трансферов пуст!");
+            return;
+        }
+
+        System.out.println("\n=== ВСЕ ЗАПИСИ ТРАНСФЕРОВ ===");
+        System.out.printf("Всего записей: %d\n", records.size());
+        records.forEach(System.out::println);
+    }
+
+    private void showTransferRecordsByMember() {
+        try {
+            System.out.print("Введите ID участника: ");
+            int memberId = Integer.parseInt(scanner.nextLine());
+
+            List<TransferJournal.TransferRecord> records =
+                facade.getTransferRecordsByMember(memberId);
+
+            if (records.isEmpty()) {
+                System.out.println("Записей для данного участника не найдено!");
+                return;
+            }
+
+            System.out.println("\n=== ЗАПИСИ ТРАНСФЕРОВ ДЛЯ УЧАСТНИКА ===");
+            System.out.printf("Всего записей: %d\n", records.size());
+            records.forEach(System.out::println);
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода числа!");
+        }
+    }
+
+    private void showRecentTransferRecords() {
+        List<TransferJournal.TransferRecord> records = facade.getTransferRecords();
+        if (records.isEmpty()) {
+            System.out.println("Журнал трансферов пуст!");
+            return;
+        }
+
+        int limit = Math.min(10, records.size());
+        System.out.println("\n=== ПОСЛЕДНИЕ 10 ЗАПИСЕЙ ТРАНСФЕРОВ ===");
+        for (int i = 0; i < limit; i++) {
+            System.out.println(records.get(i));
+        }
+    }
+
+    private void generateTransferReport() {
+        String report = facade.generateTransferReport();
+        System.out.println(report);
+
+        System.out.print("Сохранить отчет в файл? (да/нет): ");
+        String choice = scanner.nextLine().toLowerCase();
+
+        if (choice.equals("да")) {
+            System.out.print("Введите имя файла: ");
+            String filename = scanner.nextLine();
+            boolean success = facade.exportReportToFile(report,
+                "reports/transfer_" + filename + ".txt");
+
+            if (success) {
+                System.out.println("Отчет сохранен!");
+            } else {
+                System.out.println("Ошибка при сохранении отчета!");
+            }
+        }
+    }
+
+    private void salaryRegistryMenu() {
+        System.out.println("\n=== РЕЕСТР ЗАРПЛАТ ===");
+        System.out.println("1. Показать все зарплаты");
+        System.out.println("2. Показать историю зарплат участника");
+        System.out.println("3. Показать статистику по зарплатам");
+        System.out.println("4. Показать средние зарплаты по ролям");
+        System.out.println("5. Назад");
+        System.out.print("Выберите действие: ");
+
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> showAllSalaries();
+                case 2 -> showSalaryHistory();
+                case 3 -> showSalaryStatistics();
+                case 4 -> showAverageSalariesByRole();
+                case 5 -> { return; }
+                default -> System.out.println("Неверный выбор!");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода!");
+        }
+    }
+
+    private void showAllSalaries() {
+        List<Member> members = facade.getAllMembers();
+        System.out.println("\n=== ВСЕ ЗАРПЛАТЫ ===");
+        System.out.printf("Всего записей: %d\n", members.size());
+
+        members.forEach(m -> {
+            BigDecimal salary = facade.getSalaryFromRegistry(m.getId());
+            System.out.printf("%s (ID: %d, %s): %s\n",
+                m.getName(), m.getId(), m.getRole(), salary);
+        });
+    }
+
+    private void showSalaryHistory() {
+        try {
+            System.out.print("Введите ID участника: ");
+            int memberId = Integer.parseInt(scanner.nextLine());
+
+            SalaryRegistry.SalaryHistory history = facade.getSalaryHistory(memberId);
+            if (history == null) {
+                System.out.println("История зарплат не найдена!");
+                return;
+            }
+
+            System.out.println("\n=== ИСТОРИЯ ЗАРПЛАТ ===");
+            System.out.printf("Текущая зарплата: %s\n", history.getCurrentSalary());
+            System.out.printf("Предыдущая зарплата: %s\n", history.getPreviousSalary());
+            System.out.printf("Изменение: %s (%.2f%%)\n",
+                history.getSalaryChange(), history.getSalaryGrowthPercentage());
+
+            System.out.println("\nВсе записи:");
+            history.getAllRecords().forEach(System.out::println);
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода числа!");
+        }
+    }
+
+    private void showSalaryStatistics() {
+        List<Member> members = facade.getAllMembers();
+        if (members.isEmpty()) {
+            System.out.println("Реестр зарплат пуст!");
+            return;
+        }
+
+        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal min = null;
+        BigDecimal max = null;
+
+        for (Member member : members) {
+            BigDecimal salary = facade.getSalaryFromRegistry(member.getId());
+            total = total.add(salary);
+
+            if (min == null || salary.compareTo(min) < 0) {
+                min = salary;
+            }
+            if (max == null || salary.compareTo(max) > 0) {
+                max = salary;
+            }
+        }
+
+        BigDecimal average = total.divide(BigDecimal.valueOf(members.size()),
+            2, BigDecimal.ROUND_HALF_UP);
+
+        System.out.println("\n=== СТАТИСТИКА ЗАРПЛАТ ===");
+        System.out.printf("Общий фонд: %s\n", total);
+        System.out.printf("Средняя зарплата: %s\n", average);
+        System.out.printf("Минимальная зарплата: %s\n", min);
+        System.out.printf("Максимальная зарплата: %s\n", max);
+    }
+
+    private void showAverageSalariesByRole() {
+        Map<String, BigDecimal> averages = facade.getAverageSalaryByRoleFromRegistry();
+
+        System.out.println("\n=== СРЕДНИЕ ЗАРПЛАТЫ ПО РОЛЯМ ===");
+        for (Map.Entry<String, BigDecimal> entry : averages.entrySet()) {
+            System.out.printf("%s: %s\n", entry.getKey(), entry.getValue());
+        }
+    }
+
+    private void trainingRegistryMenu() {
+        System.out.println("\n=== РЕЕСТР ТРЕНИРОВОК ===");
+        System.out.println("1. Показать статистику по дням");
+        System.out.println("2. Показать самые активные дни");
+        System.out.println("3. Назад");
+        System.out.print("Выберите действие: ");
+
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> showTrainingStatisticsByDate();
+                case 2 -> showMostActiveDays();
+                case 3 -> { return; }
+                default -> System.out.println("Неверный выбор!");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода!");
+        }
+    }
+
+    private void showTrainingStatisticsByDate() {
+        Map<LocalDate, Integer> counts = facade.getTrainingCountByDate();
+
+        System.out.println("\n=== СТАТИСТИКА ТРЕНИРОВОК ПО ДНЯМ ===");
+        System.out.printf("Всего дней с тренировками: %d\n", counts.size());
+
+        counts.entrySet().stream()
+            .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
+            .forEach(entry ->
+                System.out.printf("%s: %d тренировок\n", entry.getKey(), entry.getValue()));
+    }
+
+    private void showMostActiveDays() {
+        List<LocalDate> activeDays = facade.getMostActiveTrainingDays(5);
+
+        System.out.println("\n=== САМЫЕ АКТИВНЫЕ ДНИ ===");
+        for (int i = 0; i < activeDays.size(); i++) {
+            LocalDate date = activeDays.get(i);
+            int count = facade.getTrainingCountByDate().getOrDefault(date, 0);
+            System.out.printf("%d. %s: %d тренировок\n", i + 1, date, count);
+        }
+    }
+
 }

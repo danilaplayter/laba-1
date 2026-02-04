@@ -2,6 +2,9 @@ package sportclub.domain.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -111,6 +114,88 @@ public class StatisticsService {
                 .sorted((m1, m2) -> Integer.compare(m2.getExperience(), m1.getExperience()))
                 .limit(limit)
                 .collect(Collectors.toList());
+    }
+
+    public Map<String, DoubleSummaryStatistics> getExperienceStatisticsByRole(List<Member> members) {
+        Map<String, DoubleSummaryStatistics> statsByRole = new HashMap<>();
+
+        for (Member member : members) {
+            String role = member.getRole();
+            DoubleSummaryStatistics stats = statsByRole.getOrDefault(role,
+                new DoubleSummaryStatistics());
+            stats.accept(member.getExperience());
+            statsByRole.put(role, stats);
+        }
+
+        return statsByRole;
+    }
+
+    public Map<String, DoubleSummaryStatistics> getAgeStatisticsByRole(List<Member> members) {
+        Map<String, DoubleSummaryStatistics> statsByRole = new HashMap<>();
+
+        for (Member member : members) {
+            String role = member.getRole();
+            DoubleSummaryStatistics stats = statsByRole.getOrDefault(role,
+                new DoubleSummaryStatistics());
+            stats.accept(member.getAge());
+            statsByRole.put(role, stats);
+        }
+
+        return statsByRole;
+    }
+
+    public Map<String, DoubleSummaryStatistics> getTrainingStatisticsByRole(List<Member> members) {
+        Map<String, DoubleSummaryStatistics> statsByRole = new HashMap<>();
+
+        for (Member member : members) {
+            String role = member.getRole();
+            DoubleSummaryStatistics stats = statsByRole.getOrDefault(role,
+                new DoubleSummaryStatistics());
+            stats.accept(member.getTrainingCount());
+            statsByRole.put(role, stats);
+        }
+
+        return statsByRole;
+    }
+
+    public Map<String, DoubleSummaryStatistics> getSalaryStatisticsByRole(List<Member> members) {
+        return members.stream()
+            .collect(Collectors.groupingBy(
+                Member::getRole,
+                Collectors.summarizingDouble(m -> m.getBaseSalary().doubleValue())
+            ));
+    }
+
+    public List<Member> getTopByAge(List<Member> members, int limit, boolean ascending) {
+        Comparator<Member> comparator = ascending ?
+            Comparator.comparingInt(Member::getAge) :
+            Comparator.comparingInt(Member::getAge).reversed();
+
+        return members.stream()
+            .sorted(comparator)
+            .limit(limit)
+            .collect(Collectors.toList());
+    }
+
+    public List<Member> getTopByTrainingCount(List<Member> members, int limit) {
+        return members.stream()
+            .sorted((m1, m2) -> Integer.compare(m2.getTrainingCount(), m1.getTrainingCount()))
+            .limit(limit)
+            .collect(Collectors.toList());
+    }
+
+    public Map<String, Long> getRoleDistributionDetailed(List<Member> members) {
+        return members.stream()
+            .collect(Collectors.groupingBy(
+                Member::getRole,
+                Collectors.counting()
+            ));
+    }
+
+    public double getAverageExperienceAll(List<Member> members) {
+        DoubleSummaryStatistics stats = members.stream()
+            .collect(Collectors.summarizingDouble(Member::getExperience));
+        return stats.getAverage();
     }
 
     @Getter
